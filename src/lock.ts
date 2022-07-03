@@ -21,6 +21,7 @@ const main = () => {
   const homePath = os.homedir();
   HAPStorage.setCustomStoragePath(path.join(homePath, '.homekit-pc-lock'));
 
+  // Set up accessory
   const accessoryUUID = uuid.generate(options.name);
   const accessory = new Accessory("HomeKit PC Lock", accessoryUUID);
 
@@ -58,7 +59,11 @@ const main = () => {
     category: Categories.SWITCH,
   });
 
+  // Start server
   console.log(`${new Date().toLocaleString()} - Accessory setup finished!`);
+  console.log(`${new Date().toLocaleString()} - Pincode: ${options.pincode}`);
+  console.log(`${new Date().toLocaleString()} - Address: ${options.address}`);
+  console.log(`${new Date().toLocaleString()} - Please use above pincode to pair with your Apple Home.`);
 }
 
 const install = () => {
