@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import { Command } from "commander";
-
+import { userInfo } from "os";
+import path from "path";
 
 export const listSessions = () => {
     const stdout = execSync("loginctl list-sessions").toString();
@@ -30,16 +31,26 @@ export const unlockSession = (sessionId: string) => {
     execSync(`loginctl unlock-session ${sessionId}`);
 }
 
-export const parseArgs = () => {
+type Options = {
+    name: string;
+    address: string;
+    pincode: string;
+    install: boolean;
+    uninstall: boolean;
+}
+
+export const parseArgs = (): Options => {
     const program = new Command();
     program
         .name("HomeKit PC Lock")
         .option('--name <string>', 'A unique name used to generate a UUID for the accessory.', 'lengyue.pc.lock')
         .option('--address <string>', 'The address of the accessory.', '07:AD:1F:64:A4:B9')
-        .option('--pincode <string>', 'The pincode of the accessory.', '892-05-133');
+        .option('--pincode <string>', 'The pincode of the accessory.', '892-05-133')
+        .option('--install', 'Install as system service.', false)
+        .option('--uninstall', 'Uninstall system service.', false)
+        .parse();
 
-    program.parse();
-    const options = program.opts();
+    const options: Options = program.opts();
 
     options.address = options.address.toUpperCase();
 
@@ -53,5 +64,31 @@ export const parseArgs = () => {
         process.exit(1);
     }
 
+    if (options.install && options.uninstall) {
+        console.error("Cannot install and uninstall at the same time.");
+        process.exit(1);
+    }
+
     return options;
+}
+
+export const buildSystemctlService = (options: Options) => {
+    const currentUser = userInfo().username;
+    const nodePath = execSync(`which node`).toString().trim();
+    const execPath = path.join(__dirname, "lock.js");
+    const args = `--name ${options.name} --address ${options.address} --pincode ${options.pincode}\n`;
+
+    const service = "[Unit]\n" +
+        "Description=HomeKit PC Locker\n" +
+        "After=network.target\n\n" +
+        "[Service]\n" +
+        "Type=simple\n" +
+        `User=${currentUser}\n` +
+        `ExecStart=${nodePath} ${execPath} ${args}` +
+        "Restart=always\n" +
+        "RestartSec=10s\n\n" +
+        "[Install]\n" +
+        "WantedBy=multi-user.target\n";
+    
+    return service;
 }
