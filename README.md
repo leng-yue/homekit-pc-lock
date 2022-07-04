@@ -3,7 +3,7 @@
     <a href="https://www.npmjs.com/package/homekit-pc-lock" target="_blank">
         <img src="https://img.shields.io/npm/v/homekit-pc-lock" />
     </a>
-    <a href="https://github.com/leng-yue/homekit-pc-lock/settings/actions/workflows/ci.yml" target="_blank">
+    <a href="https://github.com/leng-yue/homekit-pc-lock/actions/workflows/ci.yml" target="_blank">
         <img src="https://img.shields.io/github/workflow/status/leng-yue/homekit-pc-lock/CI" />
     </a>
     <a href="https://www.npmjs.com/package/homekit-pc-lock" target="_blank">
