@@ -67,7 +67,7 @@ func installService() {
 		"[Service]\n"+
 		"Type=simple\n"+
 		"User=%s\n"+
-		"ExecStart=%s --name %s --pincode %s --storage-path %s\n"+
+		"ExecStart=%s --name '%s' --pincode '%s' --storage-path '%s'\n"+
 		"Restart=always\n"+
 		"RestartSec=10s\n\n"+
 		"[Install]\n"+

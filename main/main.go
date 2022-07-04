@@ -22,7 +22,7 @@ func init() {
 	}
 
 	name = flag.String("name", "HomeKit PC Lock", "name of the accessory")
-	pincode = flag.String("pincode", "32191123", "pincode for the accessory")
+	pincode = flag.String("pincode", "37191166", "pincode for the accessory")
 	storagePath = flag.String("storage-path", path.Join(homeDir, ".homekit-pc-lock"), "path to store accessary data")
 
 	install = flag.Bool("install", false, "install the service")
@@ -32,6 +32,13 @@ func init() {
 
 	if *install && *uninstall {
 		log.Fatal("Only one of --install or --uninstall can be used")
+	}
+
+	if _, err := os.Stat(*storagePath); os.IsNotExist(err) {
+		err = os.MkdirAll(*storagePath, 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
