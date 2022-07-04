@@ -1,6 +1,6 @@
 {
   "name": "homekit-pc-lock",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lock and unlock your PC using HomeKit",
   "main": "dist/lock.js",
   "author": "Lengyue <lengyue@lengyue.me>",
@@ -19,8 +19,7 @@
   "preferGlobal": true,
   "dependencies": {
     "commander": "^9.3.0",
-    "hap-nodejs": "^0.10.2",
-    "tempy": "^3.0.0"
+    "hap-nodejs": "^0.10.2"
   },
   "devDependencies": {
     "@types/node": "^18.0.1",
